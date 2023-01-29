@@ -1,0 +1,3 @@
+cart_header: By.xpath("//span[@class='title']")
+list_cart1: By.xpath("//div[@class='cart_item_label']//child::a[@id='item_4_title_link']")
+list_cart2: By.xpath("//div[@class='cart_item_label']//child::a[@id='item_5_title_link']")

@@ -1,0 +1,4 @@
+home_header: By.xpath("//div[@class='app_logo']")
+add_backpack: By.xpath("//button[@id='add-to-cart-sauce-labs-backpack']")
+add_jacket: By.xpath("//button[@id='add-to-cart-sauce-labs-fleece-jacket']")
+cart: By.xpath("//a[.='2']")

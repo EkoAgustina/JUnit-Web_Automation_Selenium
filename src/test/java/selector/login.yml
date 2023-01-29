@@ -1,0 +1,3 @@
+loginButoon: By.xpath("//input[@id='login-button']")
+usernameField: By.xpath("//input[@id='user-name']")
+passwordField: By.xpath("//input[@id='password']")
