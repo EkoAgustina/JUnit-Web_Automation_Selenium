@@ -33,7 +33,7 @@ public class jobDetailSteps {
        - Used to provide actions open url
        - String Url     => Parameters for the url used
    */
-    @Given("User open {string}")
+    @Given("^User open \"(.*)\"$")
     public void userOpenWith(String url) throws Exception {
       if (url == null || url.isEmpty() == true){
           throw new RuntimeException(ANSI_RED+"Url not found!"+ANSI_RESET);
@@ -50,7 +50,7 @@ public class jobDetailSteps {
         - Used to provide waiting time
         - int time => timeout duration parameter
      */
-    @And("User wait {int} seconds")
+    @And("^Wait (.*) seconds$")
     public void userWaitSeconds(int time) throws InterruptedException {
 
         try {
@@ -63,7 +63,7 @@ public class jobDetailSteps {
         - Used to provide a Click action on an Element
         - String element => parameter for the element used
      */
-    @And("User click {string}")
+    @And("^User click \"(.*)\"$")
     public void userClick(String element) throws FileNotFoundException {
         path_element = mapper.key_element(element);
         locator = mapper.LoadYaml(path_element.split("\\:")[0], path_element.split("\\:")[1]);
@@ -85,7 +85,7 @@ public class jobDetailSteps {
         - String element    => Parameter for the element used
         - String test_data  => Parameter test data used
     */
-    @And("User fills in {string} with {string}")
+    @And("^Fill in \"(.*)\" with \"(.*)\"$")
     public void userFillsInWith(String element, String test_data) {
         path_element = mapper.key_element(element);
         locator = mapper.LoadYaml(path_element.split("\\:")[0],path_element.split("\\:")[1]);
@@ -108,7 +108,7 @@ public class jobDetailSteps {
         - Used to verify the element is displayed
         - String element => parameter for the element used
      */
-    @Then("Verify element {string} will be displayed")
+    @Then("^Element \"(.*)\" will be displayed$")
     public void verifyElementWillBeDisplayed(String element){
         path_element = mapper.key_element(element);
         locator = mapper.LoadYaml(path_element.split("\\:")[0],path_element.split("\\:")[1]);
@@ -132,7 +132,7 @@ public class jobDetailSteps {
        - String condition  => parameters to provide conditions whether Equal or Not Equal
        - String test_data  => parameters for the test data used
     */
-    @Then("Verify value {string} is {string} with data {string}")
+    @Then("^Verify value \"(.*)\" is \"(.*)\" with data \"(.*)\"$")
     public void VerifyValueIsWithData(String element, String condition, String test_data) {
         path_element = mapper.key_element(element);
         locator = mapper.LoadYaml(path_element.split("\\:")[0],path_element.split("\\:")[1]);
@@ -178,7 +178,7 @@ public class jobDetailSteps {
         - Used to take screenshots then save in your project folder and screenshots will be displayed in the Allure Report
         - String screenshotName => Parameter for the filename of the screenshot
      */
-    @Then("User take screenshot with file name {string}")
+    @Then("^User take screenshot with file name \"(.*)\"$")
     public void userTakesScreenshotWithFileName(String screenshotName) throws IOException {
         try {
             path_screenshot = String.valueOf(captureScreen(screenshotName));
