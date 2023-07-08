@@ -35,6 +35,7 @@ public class driverHooks {
         else{
             scenario.log(scenario.getName() +" "+scenario.getStatus());
         }
+        driver.close();
     }
 
 }

@@ -1,11 +1,9 @@
 @echo off
 
 ::===============================Configuration==================================
-::Enter browser, example => browser=chrome
-set browser=edge
+set browser=headless
 
-::Enter tags, example => tags=@smoke
-set tags=@smokeTest
+set tags=@Login
 ::==============================================================================
 
 if defined browser (

@@ -2,12 +2,10 @@ package cucumber.steps;
 
 import helpers.base_click;
 import helpers.base_expect;
-import helpers.base_screen;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.qameta.allure.Allure;
-import mappings.mapper;
 import org.openqa.selenium.WebDriver;
 
 import java.io.ByteArrayInputStream;
@@ -16,22 +14,16 @@ import java.io.IOException;
 
 import static helpers.base_expect.equal_data;
 import static helpers.base_fill.fill;
-import static helpers.base_get.get_text;
 import static helpers.base_screen.*;
 import static java.lang.Thread.sleep;
+import static mappings.mapper.*;
 
 public class jobDetailSteps {
     WebDriver myBrowser;
-    String path_element;
-    String locator;
-    String path_data;
-    String fill_data;
-    String expect_data;
     String path_screenshot;
 
     /*
-       - Used to provide actions open url
-       - String Url     => Parameters for the url used
+       Used to provide actions open url
    */
     @Given("^User open \"(.*)\"$")
     public void userOpenWith(String url) throws Exception {
@@ -47,8 +39,7 @@ public class jobDetailSteps {
       }
     }
     /*
-        - Used to provide waiting time
-        - int time => timeout duration parameter
+         Used to provide waiting time
      */
     @And("^Wait (.*) seconds$")
     public void userWaitSeconds(int time) throws InterruptedException {
@@ -60,123 +51,52 @@ public class jobDetailSteps {
         }
     }
     /*
-        - Used to provide a Click action on an Element
-        - String element => parameter for the element used
+        Used to provide a Click action on an Element
      */
     @And("^User click \"(.*)\"$")
     public void userClick(String element) throws FileNotFoundException {
-        path_element = mapper.key_element(element);
-        locator = mapper.LoadYaml(path_element.split("\\:")[0], path_element.split("\\:")[1]);
-
-        if(locator == null || locator.isEmpty() == true){
-            throw new RuntimeException(ANSI_RED+"Locator doesn't exist!"+ANSI_RESET);
-        }
-        else {
-            try {
-                base_click.click(locator);
-            }
-            catch(Exception e) {
-                throw new RuntimeException(ANSI_RED+"Step is failed! "+"Your element: '"+ locator+ANSI_RESET+ " and your original error: '"+e.getMessage()+"'"+ANSI_RESET);
-            }
+        try{
+            base_click.click(key_element(element));
+        } catch (Exception e) {
+            throw new RuntimeException(ANSI_RED + "Step failed with original error: " + ANSI_RESET + e.getMessage());
         }
     }
     /*
-        - Used to give the Element a fill action
-        - String element    => Parameter for the element used
-        - String test_data  => Parameter test data used
+        Used to give the Element a fill action
     */
     @And("^Fill in \"(.*)\" with \"(.*)\"$")
     public void userFillsInWith(String element, String test_data) {
-        path_element = mapper.key_element(element);
-        locator = mapper.LoadYaml(path_element.split("\\:")[0],path_element.split("\\:")[1]);
-
-        if(locator == null || locator.isEmpty() == true){
-            throw new RuntimeException(ANSI_RED+"Locator doesn't exist!"+ANSI_RESET);
-        }
-        else {
-            path_data = mapper.key_data(test_data);
-            fill_data = mapper.LoadYaml(path_data.split("\\:")[0],path_data.split("\\:")[1]);
-            if(fill_data == null || fill_data.isEmpty() == true){
-                throw new RuntimeException(ANSI_RED+"Test data doesn't exist!"+ANSI_RESET);
-            }
-            else {
-                fill(locator,fill_data);
-            }
+        try{
+            fill(key_element(element),key_data(test_data));
+        }catch (Exception e){
+            throw new RuntimeException(ANSI_RED+"Step failed with original error: "+ANSI_RESET+e.getMessage());
         }
     }
     /*
-        - Used to verify the element is displayed
-        - String element => parameter for the element used
+        Used to verify the element is displayed
      */
     @Then("^Element \"(.*)\" will be displayed$")
     public void verifyElementWillBeDisplayed(String element){
-        path_element = mapper.key_element(element);
-        locator = mapper.LoadYaml(path_element.split("\\:")[0],path_element.split("\\:")[1]);
-
-        if(locator == null || locator.isEmpty() == true){
-            throw new RuntimeException(ANSI_RED+"Locator doesn't exist!"+ANSI_RESET);
-        }
-        else {
-            try {
-                base_expect.elment_displayed(locator);
-                System.out.println(ANSI_YELLOW+"Element '"+locator+"' is displayed"+ANSI_RESET);
-                Allure.addAttachment("Verify","Your element '"+locator+"' is displayed");
-            }catch (Exception e){
-                throw new RuntimeException(ANSI_RED+"Step is failed! "+"Your element: '"+ locator+ANSI_RESET+ " and your original error: '"+e.getMessage()+"'"+ANSI_RESET);
-            }
-        }
+       try{
+           base_expect.elment_displayed(key_element(element));
+       }catch (Exception e){
+           throw new RuntimeException(ANSI_RED+"Step failed with original error: "+ANSI_RESET+e.getMessage());
+       }
     }
     /*
-       - Used to verify the data obtained from the elements then compared with the test data
-       - String element    => parameter for the element used
-       - String condition  => parameters to provide conditions whether Equal or Not Equal
-       - String test_data  => parameters for the test data used
+       Used to verify the data obtained from the elements then compared with the test data
     */
-    @Then("^Verify value \"(.*)\" is \"(.*)\" with data \"(.*)\"$")
-    public void VerifyValueIsWithData(String element, String condition, String test_data) {
-        path_element = mapper.key_element(element);
-        locator = mapper.LoadYaml(path_element.split("\\:")[0],path_element.split("\\:")[1]);
-
-        if(locator == null || locator.isEmpty() == true){
-            throw new RuntimeException(ANSI_RED+"Locator doesn't exist!"+ANSI_RESET);
+    @Then("^Element \"(.*)\" is (equal|not equal) with (data|regex) \"(.*)\"$")
+    public void VerifyValueIsWithData(String element, String condition,String match, String test_data ) {
+        try {
+            equal_data(key_element(element),key_data(test_data),match,condition);
         }
-        else{
-            path_data = mapper.key_data(test_data);
-            expect_data = mapper.LoadYaml(path_data.split("\\:")[0],path_data.split("\\:")[1]);
-
-            if (expect_data == null || expect_data.isEmpty()){
-                throw new RuntimeException(ANSI_RED+"Test data doesn't exist!"+ANSI_RESET);
-            }
-            else{
-                String your_equal = equal_data(locator,expect_data);
-                switch (condition){
-                    case "equal":
-                        if(your_equal.equals("true")){
-                            Allure.addAttachment("Verify","Your value '"+ get_text(locator)+"' is equal with data '"+expect_data+"'");
-                            System.out.println(ANSI_YELLOW+"Your value '"+get_text(locator)+"' is equal with data '"+expect_data+"'"+ANSI_RESET);
-                        }
-                        else {
-                            throw new RuntimeException(ANSI_RED+"Your value '"+get_text(locator)+"' not equal with data '"+expect_data+"' not as expected"+ANSI_RESET);
-                        }
-                        break;
-                    case "not equal":
-                        if(your_equal.equals("false")){
-                            Allure.addAttachment("Verify","Your value '"+get_text(locator)+"' is not equal with data '"+expect_data+"' as expected");
-                            System.out.println(ANSI_YELLOW+"Your value '"+get_text(locator)+"' is not equal with data '"+expect_data+"' as expected");
-                        }
-                        else{
-                            throw new RuntimeException(ANSI_RED+"Your value '"+get_text(locator)+"' is equal with data '"+expect_data+"' not as expected"+ANSI_RESET);
-                        }
-                        break;
-                    default:
-                        throw new RuntimeException(ANSI_RED+"Your element: '"+locator+"' condition '"+condition+"' and test data '"+expect_data+"' step is failed!"+ANSI_RESET);
-                }
-            }
+        catch (Exception e){
+            throw new RuntimeException(ANSI_RED+"Step failed with original error: "+ANSI_RESET+e.getMessage());
         }
     }
     /*
-        - Used to take screenshots then save in your project folder and screenshots will be displayed in the Allure Report
-        - String screenshotName => Parameter for the filename of the screenshot
+        Used to take screenshots then save in your project folder and screenshots will be displayed in the Allure Report
      */
     @Then("^User take screenshot with file name \"(.*)\"$")
     public void userTakesScreenshotWithFileName(String screenshotName) throws IOException {

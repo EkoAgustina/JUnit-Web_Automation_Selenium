@@ -16,16 +16,29 @@ public class mapper {
         Used to map Element paths
      */
     public static String key_element(String element){
-        String use_selector = "src/test/java/selector/"+element;
-        return use_selector;
+        String path_element = null;
+        if (element == null || element.isEmpty()){
+            throw new RuntimeException("Element is required ..!");
+        }
+        else{
+            path_element = "src/test/java/selector/"+element.split(":")[0]+".yml"+":"+element.split(":")[1];
+            return LoadYaml(path_element.split("\\:")[0],path_element.split("\\:")[1]);
+        }
     }
     /*
         Used to map the path of Test Data
      */
     public static String key_data(String data){
-        String use_data = "src/test/java/resources/"+data;
-        return use_data;
+        String path_data = null;
+        if (data == null || data.isEmpty()){
+            throw new RuntimeException("Data is required ..!");
+        }
+        else{
+            path_data = "src/test/java/resources/"+data.split(":")[0]+".yml"+":"+data.split(":")[1];
+            return LoadYaml(path_data.split("\\:")[0],path_data.split("\\:")[1]);
+        }
     }
+
     /*
         Used to map Path File path
      */

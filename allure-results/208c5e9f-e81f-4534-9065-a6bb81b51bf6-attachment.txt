@@ -1,0 +1,1 @@
+Scenario User successfully added item to the cart FAILED

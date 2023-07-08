@@ -6,7 +6,9 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -46,15 +48,24 @@ public class base_screen {
     public static WebDriver browserDriver(String browser){
         switch (browser){
             case "chrome":
-                driver = new ChromeDriver();
-                file_path("/browser/chromedirver.exe").getAbsolutePath();
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--remote-allow-origins=*","ignore-certificate-errors");
+                driver = new ChromeDriver(chromeOptions);
+                file_path("chromedirver.exe").getAbsolutePath();
                 break;
             case "firefox":
                 driver = new FirefoxDriver();
                 break;
             case "edge":
-                driver = new EdgeDriver();
-                file_path("/browser/msedgedriver.exe").getAbsolutePath();
+                EdgeOptions edgeOptions = new EdgeOptions();
+                edgeOptions.addArguments("--remote-allow-origins=*","ignore-certificate-errors");
+                driver = new EdgeDriver(edgeOptions);
+                file_path("msedgedriver.exe").getAbsolutePath();
+                break;
+            case "headless":
+                ChromeOptions chromeHeadless = new ChromeOptions();
+                chromeHeadless.addArguments("--remote-allow-origins=*","ignore-certificate-errors","--headless");
+                driver = new ChromeDriver(chromeHeadless);
                 break;
             default:
                 throw new RuntimeException(ANSI_RED+"Your browser cannot support"+ANSI_RESET);
