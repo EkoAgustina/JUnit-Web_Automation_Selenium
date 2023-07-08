@@ -1,1 +1,0 @@
-User logs in with a valid account PASSED
