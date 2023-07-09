@@ -37,7 +37,7 @@ public class base_screen {
 
     static Properties prop=new Properties();
     public static WebDriver driver;
-    public static String continuousIntegration = System.getenv("CI");
+    public static Boolean continuousIntegration = Boolean.valueOf(System.getenv("CI"));
 
     public static void base_sleep(int duration) throws InterruptedException {
         TimeUnit.SECONDS.sleep(duration);
@@ -51,13 +51,14 @@ public class base_screen {
       Used as a basic function for selecting browser drivers
     */
     public static WebDriver browserDriver(String browser) throws MalformedURLException {
-        if (continuousIntegration != null && continuousIntegration == "true"){
+        if (continuousIntegration != null && continuousIntegration == true){
             ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.setPlatformName("linux");
             chromeOptions.addArguments("--headless=new");
             chromeOptions.addArguments("--disable-gpu");
             chromeOptions.addArguments("--no-sandbox");
             driver = new RemoteWebDriver(new URL(browser),chromeOptions);
+            System.out.println("iniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
         }
         else{
             switch (browser){
