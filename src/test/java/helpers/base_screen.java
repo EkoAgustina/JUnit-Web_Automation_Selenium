@@ -46,6 +46,10 @@ public class base_screen {
       Used as a basic function for selecting browser drivers
     */
     public static WebDriver browserDriver(String browser){
+        String operatingSystem = System.getenv("OS");
+        System.out.println("================================================");
+        System.out.println(operatingSystem);
+        System.out.println("================================================");
         switch (browser){
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
