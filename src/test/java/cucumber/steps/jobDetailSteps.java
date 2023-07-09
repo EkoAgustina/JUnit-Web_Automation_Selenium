@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 
 import static helpers.base_expect.equal_data;
 import static helpers.base_fill.fill;
@@ -27,12 +28,13 @@ public class jobDetailSteps {
    */
     @Given("^User open \"(.*)\"$")
     public void userOpenWith(String url) throws Exception {
+        String browser = System.getProperty("browser","");
         if(continuousIntegration != null && continuousIntegration == true){
             if (url == null || url.isEmpty() == true){
                 throw new RuntimeException(ANSI_RED+"Url not found!"+ANSI_RESET);
             }
             else{
-                myBrowser = browserDriver("http://localhost:4444/wd/hub");
+                myBrowser = browserDriver("http://localhost:"+browser+"/wd/hub");
                 myBrowser.manage().window().maximize();
                 myBrowser.get(url);
                 sleep(3);
@@ -43,7 +45,6 @@ public class jobDetailSteps {
                 throw new RuntimeException(ANSI_RED+"Url not found!"+ANSI_RESET);
             }
             else{
-                String browser = System.getProperty("browser","");
                 myBrowser = browserDriver(browser);
                 myBrowser.manage().window().maximize();
                 myBrowser.get(url);
