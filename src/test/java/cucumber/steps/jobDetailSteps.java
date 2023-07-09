@@ -27,7 +27,7 @@ public class jobDetailSteps {
    */
     @Given("^User open \"(.*)\"$")
     public void userOpenWith(String url) throws Exception {
-        if(continuousIntegration != null && continuousIntegration == "true"){
+        if(continuousIntegration != null && continuousIntegration == true){
             if (url == null || url.isEmpty() == true){
                 throw new RuntimeException(ANSI_RED+"Url not found!"+ANSI_RESET);
             }
