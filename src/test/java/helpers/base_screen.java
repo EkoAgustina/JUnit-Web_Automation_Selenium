@@ -10,11 +10,14 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Time;
@@ -34,6 +37,7 @@ public class base_screen {
 
     static Properties prop=new Properties();
     public static WebDriver driver;
+    public static String continuousIntegration = System.getenv("CI");
 
     public static void base_sleep(int duration) throws InterruptedException {
         TimeUnit.SECONDS.sleep(duration);
@@ -46,43 +50,40 @@ public class base_screen {
     /*
       Used as a basic function for selecting browser drivers
     */
-    public static WebDriver browserDriver(String browser){
-        String operatingSystem = System.getenv("OS");
-        System.out.println("================================================");
-        System.out.println(operatingSystem);
-        System.out.println("================================================");
-        System.out.println("================^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=========================");
-        Map<String, String> env = System.getenv();
-        for (String envName : env.keySet()) {
-            System.out.format("%s=%s%n",
-                    envName,
-                    env.get(envName));
+    public static WebDriver browserDriver(String browser) throws MalformedURLException {
+        if (continuousIntegration != null && continuousIntegration == "true"){
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.setPlatformName("linux");
+            chromeOptions.addArguments("--headless=new");
+            chromeOptions.addArguments("--disable-gpu");
+            chromeOptions.addArguments("--no-sandbox");
+            driver = new RemoteWebDriver(new URL(browser),chromeOptions);
         }
-        System.out.println("================^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=========================");
-
-        switch (browser){
-            case "chrome":
-                ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("--remote-allow-origins=*","ignore-certificate-errors");
-                driver = new ChromeDriver(chromeOptions);
-                file_path("chromedirver.exe").getAbsolutePath();
-                break;
-            case "firefox":
-                driver = new FirefoxDriver();
-                break;
-            case "edge":
-                EdgeOptions edgeOptions = new EdgeOptions();
-                edgeOptions.addArguments("--remote-allow-origins=*","ignore-certificate-errors");
-                driver = new EdgeDriver(edgeOptions);
-                file_path("msedgedriver.exe").getAbsolutePath();
-                break;
-            case "headless":
-                ChromeOptions chromeHeadless = new ChromeOptions();
-                chromeHeadless.addArguments("--remote-allow-origins=*","ignore-certificate-errors","--headless");
-                driver = new ChromeDriver(chromeHeadless);
-                break;
-            default:
-                throw new RuntimeException(ANSI_RED+"Your browser cannot support"+ANSI_RESET);
+        else{
+            switch (browser){
+                case "chrome":
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--remote-allow-origins=*","ignore-certificate-errors");
+                    driver = new ChromeDriver(chromeOptions);
+                    file_path("chromedirver.exe").getAbsolutePath();
+                    break;
+                case "firefox":
+                    driver = new FirefoxDriver();
+                    break;
+                case "edge":
+                    EdgeOptions edgeOptions = new EdgeOptions();
+                    edgeOptions.addArguments("--remote-allow-origins=*","ignore-certificate-errors");
+                    driver = new EdgeDriver(edgeOptions);
+                    file_path("msedgedriver.exe").getAbsolutePath();
+                    break;
+                case "headless":
+                    ChromeOptions chromeHeadless = new ChromeOptions();
+                    chromeHeadless.addArguments("--remote-allow-origins=*","ignore-certificate-errors","--headless");
+                    driver = new ChromeDriver(chromeHeadless);
+                    break;
+                default:
+                    throw new RuntimeException(ANSI_RED+"Your browser cannot support"+ANSI_RESET);
+            }
         }
         return driver;
     }

@@ -27,16 +27,29 @@ public class jobDetailSteps {
    */
     @Given("^User open \"(.*)\"$")
     public void userOpenWith(String url) throws Exception {
-      if (url == null || url.isEmpty() == true){
-          throw new RuntimeException(ANSI_RED+"Url not found!"+ANSI_RESET);
-      }
-      else{
-          String browser = System.getProperty("browser","");
-          myBrowser = browserDriver(browser);
-          myBrowser.manage().window().maximize();
-          myBrowser.get(url);
-          sleep(3);
-      }
+        if(continuousIntegration != null && continuousIntegration == "true"){
+            if (url == null || url.isEmpty() == true){
+                throw new RuntimeException(ANSI_RED+"Url not found!"+ANSI_RESET);
+            }
+            else{
+                myBrowser = browserDriver("http://localhost:4444/wd/hub");
+                myBrowser.manage().window().maximize();
+                myBrowser.get(url);
+                sleep(3);
+            }
+        }
+        else{
+            if (url == null || url.isEmpty() == true){
+                throw new RuntimeException(ANSI_RED+"Url not found!"+ANSI_RESET);
+            }
+            else{
+                String browser = System.getProperty("browser","");
+                myBrowser = browserDriver(browser);
+                myBrowser.manage().window().maximize();
+                myBrowser.get(url);
+                sleep(3);
+            }
+        }
     }
     /*
          Used to provide waiting time
