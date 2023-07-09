@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Time;
 import java.time.Duration;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -50,6 +51,15 @@ public class base_screen {
         System.out.println("================================================");
         System.out.println(operatingSystem);
         System.out.println("================================================");
+        System.out.println("================^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=========================");
+        Map<String, String> env = System.getenv();
+        for (String envName : env.keySet()) {
+            System.out.format("%s=%s%n",
+                    envName,
+                    env.get(envName));
+        }
+        System.out.println("================^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=========================");
+
         switch (browser){
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
