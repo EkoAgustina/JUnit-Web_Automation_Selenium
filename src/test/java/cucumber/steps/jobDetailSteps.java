@@ -34,8 +34,9 @@ public class jobDetailSteps {
                 throw new RuntimeException(ANSI_RED+"Url not found!"+ANSI_RESET);
             }
             else{
-                myBrowser = browserDriver("http://"+browser.split(";")[0]+":"+browser.split(":")[1]+"/wd/hub");
-                System.out.println(myBrowser);
+                String remoteUrl = "http://"+browser.split(":")[0]+":"+browser.split(":")[1]+"/wd/hub";
+                System.out.println(remoteUrl);
+                myBrowser = browserDriver(remoteUrl);
                 myBrowser.manage().window().maximize();
                 myBrowser.get(url);
                 sleep(3);
