@@ -58,7 +58,6 @@ public class base_screen {
             chromeOptions.addArguments("--disable-gpu");
             chromeOptions.addArguments("--no-sandbox");
             driver = new RemoteWebDriver(new URL(browser),chromeOptions);
-            System.out.println("iniiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
         }
         else{
             switch (browser){
