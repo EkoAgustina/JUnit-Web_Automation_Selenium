@@ -2,3 +2,4 @@ target
 allure-results
 .idea/shelf/
 .idea/workspace.xml
+.DS_Store
