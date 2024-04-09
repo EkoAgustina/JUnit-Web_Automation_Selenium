@@ -29,7 +29,8 @@ public class jobDetailSteps {
     @Given("^User open \"(.*)\"$")
     public void userOpenWith(String url) throws Exception {
         String browser = System.getProperty("browser","");
-        if(continuousIntegration != null && continuousIntegration == true){
+        String os = System.getProperty("os.name");
+        if(os.equals("Linux")){
             if (url == null || url.isEmpty() == true){
                 throw new RuntimeException(ANSI_RED+"Url not found!"+ANSI_RESET);
             }

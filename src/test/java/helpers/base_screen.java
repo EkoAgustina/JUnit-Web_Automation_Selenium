@@ -51,7 +51,8 @@ public class base_screen {
       Used as a basic function for selecting browser drivers
     */
     public static WebDriver browserDriver(String browser) throws MalformedURLException {
-        if (continuousIntegration != null && continuousIntegration == true){
+        String os = System.getProperty("os.name");
+        if (os.equals("Linux")){
             ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.setPlatformName("linux");
             chromeOptions.addArguments("--headless=new");
