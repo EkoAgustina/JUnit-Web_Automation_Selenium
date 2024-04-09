@@ -23,5 +23,5 @@ services:
       - "4444:4444"
 networks:
   default:
-      name: jenkis_compose_automation_network
+      name: jenkins_compose_automation_network
       external: true
